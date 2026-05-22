@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quick Document Hub</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --gold: #C9A84C;
+    --dark: #0F1117;
+    --dark2: #1A1D27;
+    --dark3: #23273A;
+    --card: #1E2235;
+    --white: #FFFFFF;
+    --light: #E8EAF0;
+    --muted: #8B90A7;
+    --green: #25D366;
+    --accent: #4F6EF7;
+    --radius: 12px;
+  }
+  body { background: var(--dark); color: var(--white); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; }
+
+  /* NAV */
+  nav { background: var(--dark2); border-bottom: 1px solid rgba(201,168,76,0.2); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-icon { width: 36px; height: 36px; background: var(--gold); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+  .logo-icon svg { width: 20px; height: 20px; fill: var(--dark); }
+  .logo-text { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
+  .logo-text span { color: var(--gold); }
+  .wa-nav { background: var(--green); color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; text-decoration: none; }
+  .wa-nav svg { width: 16px; height: 16px; fill: #fff; }
+
+  /* HERO */
+  .hero { background: var(--dark2); padding: 60px 24px 50px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.35); border-radius: 20px; padding: 5px 14px; font-size: 12px; color: var(--gold); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 20px; }
+  .hero h1 { font-size: clamp(28px, 6vw, 48px); font-weight: 800; line-height: 1.15; letter-spacing: -1px; margin-bottom: 16px; }
+  .hero h1 span { color: var(--gold); }
+  .hero p { font-size: 16px; color: var(--muted); max-width: 500px; margin: 0 auto 32px; }
+  .hero-stats { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-num { font-size: 24px; font-weight: 800; color: var(--gold); }
+  .stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* SERVICES */
+  .section { padding: 52px 24px; max-width: 900px; margin: 0 auto; }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .section-title { font-size: clamp(22px, 4vw, 32px); font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+  .section-sub { font-size: 15px; color: var(--muted); margin-bottom: 36px; }
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .service-card { background: var(--card); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); padding: 24px; transition: border-color 0.2s, transform 0.2s; }
+  .service-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .svc-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 22px; }
+  .svc-cv { background: rgba(79,110,247,0.15); }
+  .svc-biz { background: rgba(201,168,76,0.15); }
+  .svc-school { background: rgba(37,211,102,0.15); }
+  .svc-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .svc-desc { font-size: 13px; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
+  .svc-price { font-size: 26px; font-weight: 800; color: var(--gold); }
+  .svc-price span { font-size: 13px; font-weight: 400; color: var(--muted); }
+  .svc-badge { display: inline-block; background: rgba(37,211,102,0.12); color: #25D366; border: 1px solid rgba(37,211,102,0.3); border-radius: 6px; font-size: 11px; font-weight: 600; padding: 2px 8px; margin-top: 10px; }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: rgba(255,255,255,0.06); max-width: 900px; margin: 0 auto; }
+
+  /* CV STYLES */
+  .styles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+  .style-card { background: var(--card); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: border-color 0.2s, transform 0.2s; }
+  .style-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .style-preview { height: 140px; display: flex; align-items: center; justify-content: center; font-size: 11px; position: relative; overflow: hidden; }
+  .style-preview-classic { background: #fff; }
+  .style-preview-modern { background: linear-gradient(135deg, #1a1f2e 40%, #fff 40%); }
+  .style-preview-elegant { background: #fff; border-top: 4px solid #C9A84C; }
+  .style-preview-bold { background: #C0392B; }
+  .style-preview-minimal { background: #fafafa; }
+  .style-mini { width: 80px; height: 110px; background: white; border-radius: 3px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); padding: 6px; }
+  .style-mini-line { height: 2px; border-radius: 1px; margin-bottom: 3px; }
+  .style-mini-block { height: 5px; border-radius: 1px; margin-bottom: 2px; background: #eee; }
+  .style-info { padding: 12px 14px; }
+  .style-name { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+  .style-tag { font-size: 11px; color: var(--muted); }
+  .style-selected { border-color: var(--gold) !important; }
+  .style-selected .style-info::after { content: "✓ Selected"; font-size: 11px; color: var(--gold); font-weight: 700; display: block; margin-top: 4px; }
+
+  /* HOW IT WORKS */
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
+  .step { text-align: center; padding: 24px 16px; }
+  .step-num { width: 44px; height: 44px; border-radius: 50%; background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.3); color: var(--gold); font-size: 18px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
+  .step-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .step-desc { font-size: 13px; color: var(--muted); }
+
+  /* PAYMENT */
+  .payment-card { background: var(--card); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); padding: 24px; display: flex; align-items: center; gap: 20px; }
+  .bank-icon { width: 52px; height: 52px; border-radius: 10px; background: rgba(79,110,247,0.15); display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; }
+  .bank-name { font-size: 17px; font-weight: 700; }
+  .bank-detail { font-size: 14px; color: var(--muted); margin-top: 2px; }
+  .bank-acc { font-size: 20px; font-weight: 800; color: var(--gold); margin-top: 6px; letter-spacing: 0.05em; }
+
+  /* CTA */
+  .cta-section { background: var(--dark2); border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 52px 24px; text-align: center; }
+  .cta-section h2 { font-size: clamp(22px, 4vw, 32px); font-weight: 800; margin-bottom: 12px; }
+  .cta-section p { font-size: 15px; color: var(--muted); max-width: 420px; margin: 0 auto 28px; }
+  .wa-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--green); color: #fff; text-decoration: none; border-radius: 10px; padding: 14px 28px; font-size: 16px; font-weight: 700; transition: opacity 0.2s; }
+  .wa-btn:hover { opacity: 0.88; }
+  .wa-btn svg { width: 22px; height: 22px; fill: #fff; }
+  .wa-number { font-size: 13px; color: var(--muted); margin-top: 14px; }
+
+  /* FOOTER */
+  footer { background: var(--dark); padding: 28px 24px; text-align: center; border-top: 1px solid rgba(255,255,255,0.06); }
+  footer p { font-size: 13px; color: var(--muted); }
+  footer strong { color: var(--gold); }
+
+  /* ORDER MODAL */
+  .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 100; align-items: center; justify-content: center; }
+  .modal-bg.active { display: flex; }
+  .modal { background: var(--dark2); border: 1px solid rgba(201,168,76,0.25); border-radius: 16px; padding: 28px; width: 90%; max-width: 400px; }
+  .modal h3 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+  .modal p { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+  .modal-close { float: right; background: none; border: none; color: var(--muted); font-size: 22px; cursor: pointer; margin-top: -4px; }
+  .msg-preview { background: var(--dark3); border-radius: 10px; padding: 14px; font-size: 13px; color: var(--light); line-height: 1.6; margin-bottom: 20px; border-left: 3px solid var(--green); }
+  .wa-order-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--green); color: #fff; border: none; border-radius: 10px; padding: 14px; font-size: 15px; font-weight: 700; cursor: pointer; width: 100%; text-decoration: none; transition: opacity 0.2s; }
+  .wa-order-btn:hover { opacity: 0.88; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>
+    </div>
+    <div class="logo-text">Quick <span>Document</span> Hub</div>
+  </div>
+  <a class="wa-nav" href="https://wa.me/27720496217" target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+    WhatsApp
+  </a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">⭐ Professional Document Services</div>
+  <h1>Your Success Starts<br>with the <span>Right Document</span></h1>
+  <p>Fast, affordable, and professional documents delivered directly to your WhatsApp. No stress, no delays.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">5★</div><div class="stat-label">Client rating</div></div>
+    <div class="stat"><div class="stat-num">24hr</div><div class="stat-label">Turnaround</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Satisfaction</div></div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<div class="section">
+  <div class="section-label">What we offer</div>
+  <div class="section-title">Our Services</div>
+  <div class="section-sub">Choose a service and we'll get it done fast.</div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="svc-icon svc-cv">📄</div>
+      <div class="svc-title">CV / Resume</div>
+      <div class="svc-desc">Job-ready, professionally designed CV tailored to your experience and the role you want.</div>
+      <div class="svc-price">R20 <span>per CV</span></div>
+      <div class="svc-badge">Most popular</div>
+      <br><br>
+      <button onclick="openOrder('CV / Resume', 'R20')" style="width:100%;background:#4F6EF7;color:#fff;border:none;border-radius:8px;padding:10px;font-size:14px;font-weight:700;cursor:pointer;">Order Now</button>
+    </div>
+    <div class="service-card">
+      <div class="svc-icon svc-biz">📣</div>
+      <div class="svc-title">Business Post</div>
+      <div class="svc-desc">Eye-catching promotional posts and adverts designed to grow your brand on social media.</div>
+      <div class="svc-price">R50–R200 <span>per post</span></div>
+      <br><br>
+      <button onclick="openOrder('Business Post', 'R50–R200')" style="width:100%;background:#4F6EF7;color:#fff;border:none;border-radius:8px;padding:10px;font-size:14px;font-weight:700;cursor:pointer;">Order Now</button>
+    </div>
+    <div class="service-card">
+      <div class="svc-icon svc-school">🎒</div>
+      <div class="svc-title">School Assignment</div>
+      <div class="svc-desc">Well-structured, student-friendly assignments. Neat formatting, proper referencing.</div>
+      <div class="svc-price">R20 <span>per assignment</span></div>
+      <br><br>
+      <button onclick="openOrder('School Assignment', 'R20')" style="width:100%;background:#4F6EF7;color:#fff;border:none;border-radius:8px;padding:10px;font-size:14px;font-weight:700;cursor:pointer;">Order Now</button>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- CV STYLES -->
+<div class="section">
+  <div class="section-label">Pick your look</div>
+  <div class="section-title">CV Style Gallery</div>
+  <div class="section-sub">Choose a style and we'll build your CV in that design.</div>
+  <div class="styles-grid" id="stylesGrid">
+
+    <!-- Classic -->
+    <div class="style-card" onclick="selectStyle(this,'Classic')">
+      <div class="style-preview style-preview-classic">
+        <div class="style-mini">
+          <div class="style-mini-line" style="background:#333;width:60%;height:4px;margin-bottom:4px;"></div>
+          <div class="style-mini-line" style="background:#888;width:40%;height:2px;margin-bottom:6px;"></div>
+          <div class="style-mini-block" style="width:90%;"></div>
+          <div class="style-mini-block" style="width:70%;"></div>
+          <div class="style-mini-block" style="width:80%;"></div>
+          <div style="height:8px;"></div>
+          <div class="style-mini-block" style="width:90%;background:#ccc;"></div>
+          <div class="style-mini-block" style="width:60%;background:#ccc;"></div>
+        </div>
+      </div>
+      <div class="style-info">
+        <div class="style-name">Classic</div>
+        <div class="style-tag">Clean &amp; timeless</div>
+      </div>
+    </div>
+
+    <!-- Modern Dark -->
+    <div class="style-card" onclick="selectStyle(this,'Modern Dark Sidebar')">
+      <div class="style-preview style-preview-modern">
+        <div class="style-mini" style="display:flex;padding:0;overflow:hidden;">
+          <div style="width:28px;background:#1a1f2e;padding:4px 3px;">
+            <div style="width:16px;height:16px;border-radius:50%;background:#555;margin:0 auto 4px;"></div>
+            <div style="height:2px;background:#555;border-radius:1px;margin-bottom:2px;"></div>
+            <div style="height:2px;background:#555;border-radius:1px;margin-bottom:2px;"></div>
+            <div style="height:2px;background:#888;border-radius:1px;width:80%;"></div>
+          </div>
+          <div style="flex:1;padding:5px 4px;">
+            <div style="height:4px;background:#333;border-radius:1px;width:80%;margin-bottom:3px;"></div>
+            <div style="height:2px;background:#ccc;border-radius:1px;width:60%;margin-bottom:6px;"></div>
+            <div style="height:2px;background:#eee;width:90%;border-radius:1px;margin-bottom:2px;"></div>
+            <div style="height:2px;background:#eee;width:70%;border-radius:1px;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="style-info">
+        <div class="style-name">Modern dark</div>
+        <div class="style-tag">Bold &amp; professional</div>
+      </div>
+    </div>
+
+    <!-- Elegant Gold -->
+    <div class="style-card" onclick="selectStyle(this,'Elegant Gold')">
+      <div class="style-preview style-preview-elegant">
+        <div class="style-mini">
+          <div style="height:3px;background:#C9A84C;width:100%;border-radius:1px;margin-bottom:5px;"></div>
+          <div style="height:5px;background:#1a1a2e;border-radius:1px;width:75%;margin-bottom:3px;"></div>
+          <div style="height:2px;background:#C9A84C;border-radius:1px;width:50%;margin-bottom:6px;"></div>
+          <div style="height:2px;background:#ddd;width:90%;border-radius:1px;margin-bottom:2px;"></div>
+          <div style="height:2px;background:#ddd;width:70%;border-radius:1px;margin-bottom:2px;"></div>
+          <div style="height:2px;background:#ddd;width:80%;border-radius:1px;"></div>
+        </div>
+      </div>
+      <div class="style-info">
+        <div class="style-name">Elegant gold</div>
+        <div class="style-tag">Premium &amp; executive</div>
+      </div>
+    </div>
+
+    <!-- Bold Red -->
+    <div class="style-card" onclick="selectStyle(this,'Bold Red')">
+      <div class="style-preview style-preview-bold">
+        <div class="style-mini">
+          <div style="height:20px;background:#C0392B;border-radius:2px 2px 0 0;margin:-6px -6px 5px;padding:5px 6px;">
+            <div style="height:3px;background:rgba(255,255,255,0.8);border-radius:1px;width:70%;"></div>
+            <div style="height:2px;background:rgba(255,255,255,0.5);border-radius:1px;width:50%;margin-top:2px;"></div>
+          </div>
+          <div style="height:2px;background:#eee;width:90%;border-radius:1px;margin-bottom:2px;"></div>
+          <div style="height:2px;background:#eee;width:70%;border-radius:1px;margin-bottom:2px;"></div>
+          <div style="height:2px;background:#eee;width:80%;border-radius:1px;"></div>
+        </div>
+      </div>
+      <div class="style-info">
+        <div class="style-name">Bold red</div>
+        <div class="style-tag">Eye-catching &amp; vibrant</div>
+      </div>
+    </div>
+
+    <!-- Minimal -->
+    <div class="style-card" onclick="selectStyle(this,'Minimal White')">
+      <div class="style-preview style-preview-minimal">
+        <div class="style-mini" style="background:#fff;border:0.5px solid #eee;">
+          <div style="height:5px;background:#111;border-radius:1px;width:70%;margin-bottom:2px;"></div>
+          <div style="height:2px;background:#999;border-radius:1px;width:45%;margin-bottom:1px;"></div>
+          <div style="height:0.5px;background:#ccc;width:100%;margin:4px 0;"></div>
+          <div style="height:2px;background:#ddd;width:90%;border-radius:1px;margin-bottom:2px;"></div>
+          <div style="height:2px;background:#ddd;width:65%;border-radius:1px;margin-bottom:2px;"></div>
+          <div style="height:2px;background:#ddd;width:80%;border-radius:1px;"></div>
+        </div>
+      </div>
+      <div class="style-info">
+        <div class="style-name">Minimal white</div>
+        <div class="style-tag">Simple &amp; clean</div>
+      </div>
+    </div>
+
+  </div>
+  <p style="font-size:13px;color:var(--muted);margin-top:20px;">Tap a style to select it, then order via WhatsApp and we'll build it in your chosen design.</p>
+</div>
+
+<div class="divider"></div>
+
+<!-- HOW IT WORKS -->
+<div class="section">
+  <div class="section-label">The process</div>
+  <div class="section-title">How it works</div>
+  <div class="section-sub">Three simple steps to your professional document.</div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-title">Choose your service</div>
+      <div class="step-desc">Pick CV, Business Post, or School Assignment and select your preferred style.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-title">Pay &amp; send details</div>
+      <div class="step-desc">Make payment via Capitec and send your info on WhatsApp.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-title">Receive your document</div>
+      <div class="step-desc">We deliver your completed document directly to your WhatsApp.</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- PAYMENT -->
+<div class="section">
+  <div class="section-label">Payment details</div>
+  <div class="section-title">Bank transfer</div>
+  <div class="section-sub">Pay before we start. We begin as soon as payment is confirmed.</div>
+  <div class="payment-card">
+    <div class="bank-icon">🏦</div>
+    <div>
+      <div class="bank-name">Capitec Bank</div>
+      <div class="bank-detail">Account holder: Mr SS Sibiya</div>
+      <div class="bank-acc">1706 848 429</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <h2>Ready to order?</h2>
+  <p>Send us a WhatsApp and we'll get started right away. Fast turnaround, professional results.</p>
+  <a class="wa-btn" href="https://wa.me/27720496217?text=Hi!%20I%20would%20like%20to%20order%20a%20document%20from%20Quick%20Document%20Hub." target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+    Chat on WhatsApp
+  </a>
+  <div class="wa-number">072 049 6217 &nbsp;·&nbsp; All completed work delivered to your WhatsApp</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>Quick Document Hub</strong> &nbsp;·&nbsp; Fast · Affordable · Professional<br>
+  <span style="margin-top:6px;display:block;">© 2026 Quick Document Hub. All rights reserved.</span></p>
+</footer>
+
+<!-- ORDER MODAL -->
+<div class="modal-bg" id="modalBg" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('modalBg').classList.remove('active')">×</button>
+    <h3 id="modalTitle">Order CV / Resume</h3>
+    <p id="modalSub">We'll send your document directly to your WhatsApp once payment is confirmed.</p>
+    <div class="msg-preview" id="msgPreview"></div>
+    <a class="wa-order-btn" id="waOrderLink" href="#" target="_blank">
+      <svg style="width:20px;height:20px;fill:#fff;" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+      Open WhatsApp to Order
+    </a>
+  </div>
+</div>
+
+<script>
+let selectedStyle = '';
+
+function selectStyle(el, name) {
+  document.querySelectorAll('.style-card').forEach(c => c.classList.remove('style-selected'));
+  el.classList.add('style-selected');
+  selectedStyle = name;
+}
+
+function openOrder(service, price) {
+  const styleNote = selectedStyle ? ' (Style: ' + selectedStyle + ')' : '';
+  const msg = 'Hi! I would like to order a *' + service + '*' + styleNote + '.\nPrice: ' + price + '\n\nMy details:\nName: \nPhone: \n\n(I will send proof of payment to Capitec Acc: 1706 848 429)';
+  document.getElementById('modalTitle').textContent = 'Order ' + service;
+  document.getElementById('modalSub').textContent = 'Price: ' + price + (selectedStyle ? ' · Style: ' + selectedStyle : '') + ' · Delivered to your WhatsApp';
+  document.getElementById('msgPreview').textContent = msg;
+  document.getElementById('waOrderLink').href = 'https://wa.me/27720496217?text=' + encodeURIComponent(msg);
+  document.getElementById('modalBg').classList.add('active');
+}
+
+function closeModal(e) {
+  if (e.target.id === 'modalBg') document.getElementById('modalBg').classList.remove('active');
+}
+</script>
+</body>
+</html>
